@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUD study-hub - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_css %}{% endblock %}
+        <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B89Y56NN3M"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-B89Y56NN3M');
+    </script>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <i class="fas fa-book-open"></i>
+        <span>my academic materials</span>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav">
+        <ul class="nav-links">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_uploader %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button">
+                        <i class="fas fa-tools"></i> Admin
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'materials_upload' %}">
+                            <i class="fas fa-upload"></i> Upload Materials
+                        </a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a></li>
+                {% else %}
+
+                <li><a href="{% url 'department_list' %}" {% if request.resolver_match.url_name == 'department_list' %}class="active"{% endif %}>
+                    <i class="fas fa-building"></i> Departments
+                </a></li>
+                
+                <li><a href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a></li>
+
+            {% endif %}
+                
+            {% else %}
+                <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="{% url 'home' %}#features" class="scroll-link">
+                    <i class="fas fa-star"></i> Features
+                </a></li>
+                <li><a href="{% url 'home' %}#about" class="scroll-link">
+                    <i class="fas fa-info-circle"></i> About
+                </a></li>
+                <li><a href="{% url 'home' %}#contact" class="scroll-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a></li>
+                <li><a href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    <button class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</header>
+
+<!-- Mobile sidebar (hidden by default) -->
+    <div class="sidebar" id="sidebar">
+        {% if request.user.is_authenticated %}
+        <div class="user-info">
+            <div class="avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details">
+                <h4>{{ request.user.username }}</h4>
+                <p>{{ request.user.email }}</p>
+            </div>
+        </div>
+        {% endif %}
+        <ul class="nav-links">
+            <!-- templates/base.html -->
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_uploader %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-tools"></i> Admin
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a></li>
+                    <li><a class="dropdown-item" href="{% url 'materials_upload' %}">
+                        <i class="fas fa-upload"></i> Upload Materials
+                    </a></li>
+                </ul>
+            </li>
+            {% else %}
+
+            <li><a href="{% url 'department_list' %}" {% if request.resolver_match.url_name == 'department_list' %}class="active"{% endif %}>
+                <i class="fas fa-building"></i> Departments
+            </a></li>
+
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>
+                <i class="fas fa-home"></i> Home
+            </a></li>
+            <li><a href="{% url 'home' %}#features" class="scroll-link">
+                <i class="fas fa-star"></i> Features
+            </a></li>
+            <li><a href="{% url 'home' %}#about" class="scroll-link">
+                <i class="fas fa-info-circle"></i> About
+            </a></li>
+            <!-- <li><a href="{% url 'home' %}#testimonials" class="scroll-link">
+                <i class="fas fa-quote-left"></i> Testimonials
+            </a></li> -->
+            <li><a href="{% url 'home' %}#contact" class="scroll-link">
+                <i class="fas fa-envelope"></i> Contact
+            </a></li>
+            {% endif %}
+            
+            {% if request.user.is_authenticated %}
+                <li><hr class="dropdown-divider"></li>
+                <a href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            {% endif %}
+            </li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+   {% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" id="alert-{{ forloop.counter }}">
+        {{ message }}
+        <button type="button" class="close" onclick="closeAlert('alert-{{ forloop.counter }}')">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+    <div class="container">
+        {% block content %}
+        <!-- Content will be inserted here by extending templates -->
+        {% endblock %}
+        
+        <footer>
+            <p>FUD study-hub &copy; {% now "Y" %} | All rights reserved</p>
+        </footer>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Close sidebar when clicking a link (for mobile)
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+        
+        // Smooth scrolling for section links
+        document.querySelectorAll('a.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without reload
+                    history.pushState(null, null, '#' + targetId);
+                }
+            });
+        });
+        
+        // Highlight active section in sidebar
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.sidebar a.scroll-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').includes(sectionId)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    //track download
+    document.querySelectorAll('.download-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+    gtag('event', 'material_download', {
+      'material_title': "{{ material.title|escapejs }}",
+      'department': "{{ department.name|escapejs }}"
+    });
+  });
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | FUD study-hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .auth-container h2 {
+        color: #1a2a6c;
+        margin-bottom: 15px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .auth-container p.subtitle {
+        color: #666;
+        margin-bottom: 30px;
+    }
+    
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .form-group {
+        text-align: left;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #1a2a6c;
+        font-weight: 500;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus {
+        border-color: #1a2a6c;
+        box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+        outline: none;
+    }
+    
+    .btn-login {
+        background: #1a2a6c;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .btn-login:hover {
+        background: #0d1a4a;
+        transform: translateY(-2px);
+    }
+    
+    .alert {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: left;
+        border-left: 4px solid;
+    }
+    
+    .alert-danger {
+        color: #e74c3c;
+        background: #fdeded;
+        border-color: #e74c3c;
+    }
+    
+    .forgot-password {
+        text-align: right;
+        margin-top: 8px;
+    }
+    
+    .forgot-password a {
+        color: #666;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+    
+    .forgot-password a:hover {
+        color: #1a2a6c;
+        text-decoration: underline;
+    }
+    
+    .auth-footer {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    
+    .auth-footer p {
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .signup-link {
+        color: #1a2a6c;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    
+    .signup-link:hover {
+        text-decoration: underline;
+    }
+    
+    @media (max-width: 576px) {
+        .auth-container {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+        
+        .auth-container h2 {
+            font-size: 1.7rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Welcome to FUD study-hub</h2>
+    <p class="subtitle">Sign in to access your learning materials</p>
+    
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <i class="fas fa-exclamation-circle"></i> {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="auth-form">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" name="username" id="id_email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" required placeholder="Enter your password">
+                <div class="forgot-password">
+                    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+                </div>
+            </div><br>
+            
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+    </div>
+    
+    <div class="auth-footer">
+        <p>Don't have an account? <a href="{% url 'signup' %}" class="signup-link">Sign up</a></p>
+    </div>
+</div>
+{% endblock %}

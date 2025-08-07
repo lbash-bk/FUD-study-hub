@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Uploader Dashboard | FUD study-hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .page-header {
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .page-header h2 {
+        color: #1a2a6c;
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card.primary {
+        background: linear-gradient(135deg, #1a2a6c, #3a56b0);
+        color: white;
+    }
+    
+    .stat-card.success {
+        background: linear-gradient(135deg, #28a745, #5cb85c);
+        color: white;
+    }
+    
+    .stat-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .stat-card .card-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    
+    .recent-uploads-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .card-header h5 {
+        color: #1a2a6c;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .new-upload-btn {
+        background: #1a2a6c;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .new-upload-btn:hover {
+        background: #0d1a4a;
+        transform: translateY(-2px);
+    }
+    
+    .material-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .material-item {
+        padding: 20px 25px;
+        border-bottom: 1px solid #f5f5f5;
+        transition: all 0.2s ease;
+    }
+    
+    .material-item:hover {
+        background: #f9f9ff;
+    }
+    
+    .material-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    
+    .material-title {
+        font-weight: 600;
+        color: #1a2a6c;
+        margin: 0;
+    }
+    
+    .download-badge {
+        background: #e6f0ff;
+        color: #1a2a6c;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .material-meta {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+    }
+    
+    .material-date {
+        color: #999;
+        font-size: 0.85rem;
+    }
+    
+    .empty-state {
+        padding: 50px 20px;
+        text-align: center;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+    
+    .empty-text {
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .empty-btn {
+        background: #1a2a6c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .empty-btn:hover {
+        background: #0d1a4a;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .material-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>
+            <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+        </h2>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="card-title">
+                <i class="fas fa-cloud-upload-alt"></i> Your Uploads
+            </div>
+            <div class="card-value">{{ stats.total_uploads }}</div>
+        </div>
+        
+        <!-- <div class="stat-card success">
+            <div class="card-title">
+                <i class="fas fa-download"></i> Total Downloads
+            </div>
+            <div class="card-value">{{ stats.total_downloads }}</div>
+        </div> -->
+        
+        {% if stats.last_upload %}
+        <div class="stat-card">
+            <div class="card-title">
+                <i class="fas fa-history"></i> Last Upload
+            </div>
+            <p class="mb-1">{{ stats.last_upload.title }}</p>
+            <p class="material-date">
+                {{ stats.last_upload.upload_date|timesince }} ago
+            </p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Recent Uploads -->
+    <div class="recent-uploads-card">
+        <div class="card-header">
+            <h5>
+                <i class="fas fa-file-upload"></i> Your Recent Uploads
+            </h5>
+            <a href="{% url 'materials_upload' %}" class="new-upload-btn">
+                <i class="fas fa-plus"></i> New Upload
+            </a>
+        </div>
+        
+        <div class="card-body">
+            {% if materials %}
+            <ul class="material-list">
+                {% for material in materials %}
+                <li class="material-item">
+                    <div class="material-header">
+                        <h6 class="material-title">{{ material.title }}</h6>
+                        <span class="download-badge">
+                            <i class="fas fa-download"></i> {{ material.download_count }} downloads
+                        </span>
+                    </div>
+                    <p class="material-meta">
+                        {{ material.department.name }} • {{ material.level.name }}
+                    </p>
+                    <p class="material-date">
+                        <i class="far fa-clock"></i> Uploaded {{ material.upload_date|timesince }} ago
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox empty-icon"></i>
+                <h4 class="empty-text">You haven't uploaded any materials yet</h4>
+                <a href="{% url 'materials_upload' %}" class="empty-btn">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Your First Material
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

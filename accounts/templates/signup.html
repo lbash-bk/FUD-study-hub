@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up | FUD study-hub{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-select {
+        appearance: auto;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        padding-right: 2.5rem;
+    }
+
+    .auth-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .auth-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .auth-header h2 {
+        color: #1a2a6c;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .auth-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #444;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #1a2a6c;
+        box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+        outline: none;
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .form-check-input {
+        margin-top: 5px;
+    }
+    
+    .form-check-label {
+        font-size: 0.95rem;
+        color: #555;
+    }
+    
+    .form-check-label a {
+        color: #1a2a6c;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .form-check-label a:hover {
+        text-decoration: underline;
+    }
+    
+    .btn-signup {
+        background: #1a2a6c;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .btn-signup:hover {
+        background: #0d1a4a;
+        transform: translateY(-2px);
+    }
+    
+    .auth-footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        text-align: center;
+    }
+    
+    .auth-footer p {
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .btn-login {
+        background: #fdbb2d;
+        color: #1a2a6c;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-login:hover {
+        background: #e0a522;
+        transform: translateY(-2px);
+    }
+    
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+    }
+    
+    .form-error {
+        background: #fdeded;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #e74c3c;
+    }
+    
+    @media (max-width: 768px) {
+        .auth-container {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+        
+        .auth-header h2 {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h2>Create Your FUD study-hub Account</h2>
+        <p>Join students using FUD study-hub to access learning materials</p>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if form.errors %}
+        <div class="form-error">
+            <p><i class="fas fa-exclamation-circle"></i> Please correct the errors below:</p>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <form method="POST" class="auth-form">
+    {% csrf_token %}
+    
+    <!-- Username -->
+    <div class="form-group">
+        <label for="id_username">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <span class="error-message">{{ form.username.errors.0 }}</span>
+        {% endif %}
+    </div>
+    
+    <!-- Email -->
+    <div class="form-group">
+        <label for="id_email">Email Address</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <span class="error-message">{{ form.email.errors.0 }}</span>
+        {% endif %}
+    </div>
+    
+    <!-- Name Fields -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="id_first_name">First Name</label>
+                {{ form.first_name }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="id_last_name">Last Name</label>
+                {{ form.last_name }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Faculty -->
+    <div class="form-group">
+        <label for="id_faculty">Faculty</label>
+        {{ form.faculty }}
+    </div>
+    
+    <!-- Department -->
+    <div class="form-group">
+        <label for="id_department">Department</label>
+        {{ form.department }}
+    </div>
+
+    <!-- Password Fields -->
+    <div class="form-group">
+        <label for="id_password1">Password</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <span class="error-message">{{ form.password1.errors.0 }}</span>
+        {% endif %}
+        {% if form.password1.help_text %}
+            <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_password2">Confirm Password</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <span class="error-message">{{ form.password2.errors.0 }}</span>
+        {% endif %}
+        {% if form.password2.help_text %}
+            <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn-signup">
+        <i class="fas fa-user-plus"></i> Create Account
+    </button>
+</form>
+
+<div class="auth-footer">
+    <p>Already have an account?</p>
+    <a href="{% url 'login' %}" class="btn-login">
+        <i class="fas fa-sign-in-alt"></i> Log In
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function() {
+    // When faculty selection changes
+    $("#id_faculty").change(function() {
+        var facultyId = $(this).val();
+        if (facultyId) {
+            $.ajax({
+                url: "{% url 'ajax_load_departments' %}",
+                data: {
+                    'faculty_id': facultyId
+                },
+                success: function(data) {
+                    $("#id_department").empty();
+                    $("#id_department").append('<option value="">Select Department</option>');
+                    $.each(data, function(i, department) {
+                        $("#id_department").append($('<option>', {
+                            value: department.id,
+                            text: department.name
+                        }));
+                    });
+                }
+            });
+        } else {
+            $("#id_department").empty();
+            $("#id_department").append('<option value="">Select Department</option>');
+        }
+    });
+});
+</script>
+
+{% endblock %}

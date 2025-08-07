@@ -1,0 +1,592 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FUD study-hub - Your Academic Companion{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Updated Hero Section */
+    .hero-section {
+        background: linear-gradient(rgba(26, 42, 108, 0.8), rgba(13, 26, 74, 0.8)), 
+                    url("{% static 'images/about-us section.webp' %}") center/cover no-repeat;
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-content h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-primary {
+        background: #fdbb2d;
+        color: #1a2a6c;
+    }
+
+    .btn-primary:hover {
+        background: #e0a522;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(253, 187, 45, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+    }
+
+    .hero-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("{% static 'images/pattern.png' %}");
+        opacity: 0.05;
+        z-index: 1;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 80px 20px;
+        background: #f9fafc;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+        color: #1a2a6c;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+
+    .section-header p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(26, 42, 108, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: #1a2a6c;
+        font-size: 2rem;
+    }
+
+    .feature-card h3 {
+        color: #1a2a6c;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+    }
+
+    .feature-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    /* Why Choose Section */
+    .why-choose-section {
+        padding: 80px 20px;
+        background: white;
+    }
+
+    .why-choose-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+        align-items: center;
+    }
+
+    .why-choose-image {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .why-choose-image img {
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .why-choose-content {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .why-choose-content h2 {
+        color: #1a2a6c;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .why-choose-content p {
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.7;
+    }
+
+    .benefits-list {
+        margin-top: 30px;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .benefit-icon {
+        color: #fdbb2d;
+        font-size: 1.5rem;
+        margin-top: 3px;
+    }
+
+    .benefit-text h4 {
+        color: #1a2a6c;
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+    }
+
+    .benefit-text p {
+        margin-bottom: 0;
+    }
+
+    /* New Feedback Section */
+    .feedback-section {
+        padding: 80px 20px;
+        background: white;
+    }
+
+    .feedback-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+    }
+
+    .feedback-form {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .feedback-form h3 {
+        color: #1a2a6c;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #1a2a6c;
+        box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+        outline: none;
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+    }
+
+    .submit-btn {
+        background: #1a2a6c;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background: #0d1a4a;
+        transform: translateY(-2px);
+    }
+
+    .feedback-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .feedback-info h3 {
+        color: #1a2a6c;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .feedback-info p {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 25px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .info-icon {
+        color: #fdbb2d;
+        font-size: 1.5rem;
+    }
+
+    /* CTA Section */
+    .cta-section{
+        background: linear-gradient(rgba(26, 42, 108, 0.8), rgba(13, 26, 74, 0.8)), 
+                    url("{% static 'images/about-us section.webp' %}") center/cover no-repeat;
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .cta-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+        }
+        
+        .why-choose-content h2, .about-content h2 {
+            font-size: 2rem;
+        }
+        
+        .cta-content h2 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-section {
+            padding: 80px 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 1.8rem;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+        }
+        
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+        <h1>Welcome To Federal University Dutse Academic Materials Hub</h1>
+        <p>Access handouts, past questions, and other academic resources from all departments in one place</p>
+        <div class="hero-buttons">
+            <a href="{% url 'login' %}" class="btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Get Started
+            </a>
+            <a href="#features" class="btn-secondary">
+                <i class="fas fa-search"></i> Explore Features
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+    <div class="section-header">
+        <h2>Why FUD study-hub?</h2>
+        <p>We provide access to your academic materials from your lecturers and class reps. available anytime and from anywhere</p>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3>Comprehensive Materials</h3>
+            <p>Access lecture notes, handouts, and study guides from all departments and academic levels.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>Past Questions</h3>
+            <p>Find past test and exam questions to help you prepare effectively for your assessments.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>Easy Search</h3>
+            <p>Quickly find what you need with our powerful search and filtering system.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile Friendly</h3>
+            <p>Access your study materials anytime, anywhere, on any device.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-cloud-download-alt"></i>
+            </div>
+            <h3>Fast Downloads</h3>
+            <p>Download materials instantly with our high-speed servers and optimized files.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>Community Driven</h3>
+            <p>Contribute and benefit from materials shared by fellow students and lecturers.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Section -->
+<section id="about" class="why-choose-section">
+    <div class="why-choose-container">
+        <div class="why-choose-image">
+            <img src="{% static 'images/about-us section.webp' %}" alt="Why Choose FUD study-hub">
+        </div>
+        <div class="why-choose-content">
+            <h2>Designed for Student Success</h2>
+            <p>FUD study-hub was created by students, for students. We understand the challenges you face in accessing quality study materials, and we've built a solution that makes it easy.</p>
+            
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Save Time</h4>
+                        <p>No more searching through multiple platforms or asking upperclassmen for materials.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Study Smarter</h4>
+                        <p>Access materials from previous years to understand patterns and focus areas.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Always Available</h4>
+                        <p>Your study materials are available 24/7, even during last-minute study sessions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feedback Section -->
+<section id="contact" class="feedback-section">
+    <div class="section-header">
+        <h2>We'd Love to Hear From You</h2>
+        <p>Your feedback helps us improve the platform for everyone</p>
+    </div>
+    
+    <div class="feedback-container">
+        <div class="feedback-form">
+            <h3>Send Us Feedback</h3>
+            <form method="post" action="{% url 'feedback' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Feedback</label>
+                    <textarea id="message" name="message" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+        </div>
+        
+        <div class="feedback-info">
+            <h3>Contact Information</h3>
+            <p>Have questions or suggestions? Reach out to us through any of these channels:</p>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                    <h4>Email Us</h4>
+                    <p>blawanbkd@gmail.com</p>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div>
+                    <h4>Call Us</h4>
+                    <p>081 6992 1470</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Study Smarter?</h2>
+        <p>Join thousands of students who are already achieving academic success with FUD study-hub</p>
+        <div class="hero-buttons">
+            <a href="{% url 'signup' %}" class="btn-primary">
+                <i class="fas fa-user-plus"></i> Create Free Account
+            </a>
+            <a href="{% url 'login' %}" class="btn-secondary">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

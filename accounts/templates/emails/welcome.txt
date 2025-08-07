@@ -1,0 +1,21 @@
+Welcome to study hub, {{ user.username }}!
+
+Thank you for joining study hub! We're excited to have you as part of our community.
+
+With your account, you can now:
+- Access study materials from all departments
+- Download past questions and lecture notes
+- Save your favorite materials for quick access
+- And much more!
+
+Get started by logging in: {{ login_url }}
+
+If you have any questions, feel free to reply to this email.
+
+Happy studying!
+The study hub Team
+
+---
+© {% now "Y" %} study hub. All rights reserved.
+Terms of Service: {{ terms_url }}
+Privacy Policy: {{ privacy_url }}
