@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ufnxjw92$7u0@fgfh@*+4f%1v3%jwl6v_rhli7@u5%$8*o!rvz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://fud-study-hub.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["fud-study-hub.onrender.com", "localhost", "127.0.0.1",]
 
 
 # Application definition
