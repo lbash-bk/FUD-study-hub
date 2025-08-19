@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ufnxjw92$7u0@fgfh@*+4f%1v3%jwl6v_rhli7@u5%$8*o!rvz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://fud-study-hub.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -124,6 +124,7 @@ EMAIL_HOST_PASSWORD = 'eedeuoqnuglpnfou'
 DEFAULT_FROM_EMAIL = 'study hub <noreply@smartstudyhub.com>'
 
 PASSWORD_RESET_TIMEOUT = 3600  # 1 day in seconds
+
 #EMAIL_TIMEOUT = 30  # Increase timeout if needed
 BASE_DIR = Path(__file__).resolve().parent.parent
 
