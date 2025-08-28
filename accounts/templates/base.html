@@ -10,8 +10,10 @@
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <meta name="theme-color" content="#2C5AA0"/>
     
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- iOS Safari Specific Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes"> <!-- Add this line -->
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="FUD Hub">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
@@ -261,7 +263,7 @@
   //service worker
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+      navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
         .then(registration => {
           console.log("ServiceWorker registered with scope:", registration.scope);
         })
