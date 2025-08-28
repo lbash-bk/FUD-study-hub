@@ -5,9 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FUD study-hub - {% block title %}{% endblock %}</title>
+
+    <!-- Load the manifest using Django's static tag -->
     <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2C5AA0"/>
+    
+    <!-- iOS Safari Specific Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FUD Hub">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
     <link rel="icon" href="{% static 'icons/icon-192x192.png' %}" type="image/png">
     <meta name="theme-color" content="#2C5AA0">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block extra_css %}{% endblock %}
