@@ -1,6 +1,6 @@
 # 🧠 Study Hub
 
-Study Hub is a digital platform that allows students to easily access academic materials such as lecture notes, handouts, past questions, and study guides. It also enables class representatives and lecturers to upload materials securely.
+FUD Study Hub is a digital platform that allows students to easily access academic materials such as lecture notes, handouts, past questions, and study guides. It also enables class representatives and lecturers to upload materials securely.
 
 ---
 
@@ -25,5 +25,5 @@ Study Hub is a digital platform that allows students to easily access academic m
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/yourusername/studyhub.git
-cd studyhub
+git clone https://github.com/lbash-bk/FUD-study-hub.git
+cd FUD study-hub
