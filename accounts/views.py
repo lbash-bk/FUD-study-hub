@@ -1,4 +1,4 @@
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponse  # ✅ Added HttpResponse
 import os
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,7 +12,6 @@ from .forms import MaterialUploadForm, SignUpForm
 from .models import Material, Category, Semester, Department, Faculty
 from django.db.models import Q # for search
 from django.core.mail import send_mail
-
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
 
@@ -33,6 +32,9 @@ def service_worker(request):
         response['Service-Worker-Allowed'] = '/'
         response['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Prevent caching
         return response
+        
+    except FileNotFoundError:
+        return HttpResponse('Service worker not found', status=404)
         
     except FileNotFoundError:
         return HttpResponse('Service worker not found', status=404)
