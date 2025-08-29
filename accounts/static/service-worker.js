@@ -1,9 +1,11 @@
 const CACHE_NAME = "fud-study-hub-v1";
 const urlsToCache = [
-  "/",                // Homepage
-  "icons/icon-192x192.png",
-  "icons/icon-512x512.png",
-  "manifest.json"
+  '/',
+  '/static/css/main.css',
+  '/static/js/main.js',
+  '/static/icons/icon-72x72.png',
+  '/static/icons/icon-192x192.png',
+  '/static/icons/icon-512x512.png'
 ];
 
 // Install service worker and cache files

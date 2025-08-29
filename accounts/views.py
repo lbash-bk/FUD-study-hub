@@ -13,6 +13,29 @@ from .models import Material, Category, Semester, Department, Faculty
 from django.db.models import Q # for search
 from django.core.mail import send_mail
 
+from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_exempt
+
+
+@require_GET
+@csrf_exempt
+def service_worker(request):
+    try:
+        # Path to your service-worker.js file in static directory
+        sw_path = os.path.join(settings.STATIC_ROOT, 'service-worker.js')
+        
+        # Read the file content
+        with open(sw_path, 'r') as f:
+            content = f.read()
+        
+        # Create response with proper headers
+        response = HttpResponse(content, content_type='application/javascript')
+        response['Service-Worker-Allowed'] = '/'
+        response['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Prevent caching
+        return response
+        
+    except FileNotFoundError:
+        return HttpResponse('Service worker not found', status=404)
 
 def login_view(request):
     if request.method == 'POST':

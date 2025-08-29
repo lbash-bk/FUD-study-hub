@@ -4,11 +4,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
+from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-
+    path('service-worker.js', views.service_worker, name='service-worker'), 
+     
      # Password reset URLs
     path('password-reset/', auth_views.PasswordResetView.as_view(
              template_name='password_reset.html',), name='password_reset'),
