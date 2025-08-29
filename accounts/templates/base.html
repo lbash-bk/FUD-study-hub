@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -21,6 +22,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
     {% block extra_css %}{% endblock %}
         <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B89Y56NN3M"></script>
@@ -166,6 +168,11 @@
             </li>
         </ul>
     </div>
+
+    <!-- Install Button -->
+    <button id="installButton">
+        <i class="fas fa-download"></i> Install App
+    </button>
     
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -272,6 +279,96 @@
     });
   }
 
+   <!-- PWA Install Script -->
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+        
+        // Only add PWA functionality if the browser supports it
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Register service worker
+                navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+                    .then(registration => {
+                        console.log("ServiceWorker registered with scope:", registration.scope);
+                    })
+                    .catch(error => {
+                        console.log("ServiceWorker registration failed:", error);
+                    });
+            });
+            
+            // Handle the beforeinstallprompt event
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt event fired');
+                
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                
+                // Stash the event so it can be triggered later
+                deferredPrompt = e;
+                
+                // Show the install button
+                installButton.style.display = 'flex';
+                
+                // Optional: Hide button after 15 seconds
+                setTimeout(() => {
+                    if (installButton.style.display === 'flex') {
+                        installButton.style.display = 'none';
+                    }
+                }, 15000);
+            });
+
+            // Handle install button click
+            installButton.addEventListener('click', () => {
+                if (!deferredPrompt) {
+                    console.log('No deferred prompt available');
+                    return;
+                }
+                
+                console.log('Showing install prompt');
+                
+                // Show the install prompt
+                deferredPrompt.prompt();
+                
+                // Wait for the user to respond to the prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        // You can track installations here (Google Analytics, etc.)
+                        gtag('event', 'pwa_install', {
+                            'event_category': 'Engagement',
+                            'event_label': 'PWA Installation'
+                        });
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    
+                    // Clear the saved prompt since it can't be used again
+                    deferredPrompt = null;
+                    
+                    // Hide the install button
+                    installButton.style.display = 'none';
+                });
+            });
+
+            // Hide the button if the app is already installed
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA was installed successfully');
+                installButton.style.display = 'none';
+                deferredPrompt = null;
+                
+                // Optional: Show a success message
+                alert('FUD Study Hub installed successfully! You can now access it from your home screen.');
+            });
+
+            // Optional: Check if the app is already running in standalone mode
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('App is running in standalone mode');
+                installButton.style.display = 'none';
+            }
+        } else {
+            // Hide install button if PWA is not supported
+            installButton.style.display = 'none';
+        }
     </script>
 </body>
 </html>

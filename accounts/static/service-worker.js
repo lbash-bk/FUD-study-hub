@@ -1,9 +1,8 @@
-const CACHE_NAME = "fud-study-hub-v2"; // Change version when updating
+const CACHE_NAME = "fud-study-hub-v3"; // Changed version to v3
 const urlsToCache = [
   '/',
   '/static/css/main.css',
   '/static/js/main.js', 
-  '/static/icons/icon-72x72.png',
   '/static/icons/icon-192x192.png',
   '/static/icons/icon-512x512.png'
 ];
@@ -26,17 +25,22 @@ self.addEventListener("fetch", event => {
     caches.match(event.request).then(response => {
       // Return cached version or fetch from network
       return response || fetch(event.request).then(fetchResponse => {
-        // Optional: Cache new requests as they come in
+        // Cache new requests as they come in (dynamic caching)
         return caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, fetchResponse.clone());
+          // Only cache successful responses and same-origin requests
+          if (fetchResponse.status === 200 && event.request.url.startsWith('https://fud-study-hub.onrender.com')) {
+            cache.put(event.request, fetchResponse.clone());
+          }
           return fetchResponse;
         });
       });
     }).catch(() => {
-      // Optional: Return offline page for navigation requests
+      // Return a fallback for navigation requests when offline
       if (event.request.mode === 'navigate') {
-        return caches.match('/offline.html');
+        return caches.match('/')
+          .then(response => response || Response.redirect('/offline.html'));
       }
+      return Response.error();
     })
   );
 });
@@ -47,6 +51,7 @@ self.addEventListener("activate", event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
