@@ -73,17 +73,3 @@ function autoDismissAlerts() {
         }, 5000); // 5 seconds
     });
 }
-
-//service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    // Use the static path with Django's static URL structure
-    navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
-      .then(function(registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      })
-      .catch(function(error) {
-        console.log('ServiceWorker registration failed: ', error);
-      });
-  });
-}

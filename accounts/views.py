@@ -14,14 +14,16 @@ from django.db.models import Q # for search
 from django.core.mail import send_mail
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.staticfiles import finders
 
 @require_GET
 @csrf_exempt
 def service_worker(request):
     try:
-        # Path to your service-worker.js file in static directory
-        sw_path = os.path.join(settings.BASE_DIR, 'static', 'service-worker.js')
+        sw_path = finders.find('service-worker.js')
+        
+        if not sw_path:
+            return HttpResponse('Service worker not found', status=404)
         
         # Read the file content
         with open(sw_path, 'r') as f:
