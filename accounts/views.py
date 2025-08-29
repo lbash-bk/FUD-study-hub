@@ -21,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 def service_worker(request):
     try:
         # Path to your service-worker.js file in static directory
-        sw_path = os.path.join(settings.STATIC_ROOT, 'service-worker.js')
+        sw_path = os.path.join(settings.BASE_DIR, 'static', 'service-worker.js')
         
         # Read the file content
         with open(sw_path, 'r') as f:

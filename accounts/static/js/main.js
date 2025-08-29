@@ -78,7 +78,7 @@ function autoDismissAlerts() {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     // Use the static path with Django's static URL structure
-    navigator.serviceWorker.register('/static/service-worker.js', { scope: '/' })
+    navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
       .then(function(registration) {
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
       })
